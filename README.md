@@ -231,12 +231,16 @@ The first thing we need to do is get all the requirements from the competent peo
 
 Files in the repository
 
+>As we can see, the container has been successfully launched. The message in the logs ‘ready to handle connections’ indicates that FPM is running and ready to accept requests.
+![image](https://github.com/user-attachments/assets/01aff619-4f15-4b30-b593-0565a98160c6)
+
+[Link to the Dockerfile for this task.](https://github.com/olegshv/anwalt.de/blob/main/php8-app/Dockerfile)
 
 ---
 
 #### c) Given the container image would be used in a variety of environments (locally by developers, for automated testing, beta deployments, etc.), explain how you would build, store, manage and maintain it (hint: remember it would be pulled from different locations). Provide a diagram to visualise the proposed workflow.
 
-**Build**
+**1.Build**
 - Use a CI/CD pipeline (e.g., GitHub Actions, GitLab CI, Jenkins) to automatically build the Docker image on every push to the main branch.
 - Build the image for multiple architectures (x86_64 and ARM64) using Docker Buildx.
 
@@ -259,3 +263,7 @@ Files in the repository
 - Developers pull images locally for testing and development.
 - QA and CI/CD pipelines use the image for automated tests.
 - Operations use the same image for staging and production deployments.
+
+Workflow diagram:
+
+![image](https://github.com/user-attachments/assets/e6f5ca39-7cfb-4004-b36f-f296a2a87c03)
