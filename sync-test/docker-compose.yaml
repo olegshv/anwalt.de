@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  # Central mock server service for env variables
+  mockserver:
+    build:
+      context: .
+      dockerfile: Dockerfile.mock
+    ports:
+      - "8000:8000"  # Expose port 8000 to host
+
+  # First client that pulls and writes env variables to its own volume
+  envsync1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      REMOTE_ENV_ENDPOINT: http://mockserver:8000/env
+      REMOTE_ENV_VARS: DB_HOST,REDIS_URL,SECRET_KEY
+      REMOTE_ENV_USER: user
+      REMOTE_ENV_PASS: pass
+      REMOTE_ENV_TARGET_FILE: /env/remote_env.sh
+    volumes:
+      - ./env1/:/env/
+    depends_on:
+      - mockserver
+
+  # Second client, same as above but uses its own separate volume
+  envsync2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      REMOTE_ENV_ENDPOINT: http://mockserver:8000/env
+      REMOTE_ENV_VARS: DB_HOST,REDIS_URL,SECRET_KEY
+      REMOTE_ENV_USER: user
+      REMOTE_ENV_PASS: pass
+      REMOTE_ENV_TARGET_FILE: /env/remote_env.sh
+    volumes:
+      - ./env2/:/env/
+    depends_on:
+      - mockserver

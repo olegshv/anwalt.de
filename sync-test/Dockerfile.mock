@@ -1,0 +1,14 @@
+# Use slim Python base image
+FROM python:3.11-slim
+
+# Set working directory inside container
+WORKDIR /app
+
+# Copy Flask mock server script into container
+COPY mock_server.py .
+
+# Install Flask and Flask-HTTPAuth
+RUN pip install flask flask-httpauth
+
+# Run the mock server on container start
+CMD ["python", "mock_server.py"]
